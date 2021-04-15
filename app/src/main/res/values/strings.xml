@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Lets Do It</string>
+    <string name="des_fab_add_task">Add task In TODO App</string>
+    <string name="st_tv_initial_text">Add your TODO</string>
+    <string name="rv_element_task">This is a simple task inside the application</string>
+    <string name="et_add_task">Create New task</string>
+    <string name="btn_save">Save</string>
 </resources>
