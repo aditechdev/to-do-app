@@ -1,4 +1,6 @@
 package in.aditya.letsdoit;
 
-public class LauncherActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class LauncherActivity extends AppCompatActivity {
 }
