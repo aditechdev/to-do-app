@@ -1,4 +1,4 @@
-package in.aditya.letsdoit;
+package in.aditya.letsdoit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
