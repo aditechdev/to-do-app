@@ -9,13 +9,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import in.aditya.letsdoit.OnDialogCloseListener;
 import in.aditya.letsdoit.R;
@@ -34,7 +39,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     //    ---------------------------------------------------VARIABLE DECLARATION   ------------------------------------------------------------ //
 
 
-    private EditText mEditText;
+    private TextInputEditText mEditText;
     private Button mSaveButton;
     private DataBaseHandler myDb;
 
@@ -50,6 +55,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.new_entry, container, false);
+
+
         return v;
     }
 
@@ -58,6 +65,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
 
         mEditText = view.findViewById(R.id.et_new_task);
         mSaveButton = view.findViewById(R.id.btn_new_task);
@@ -136,5 +144,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
         if (activity instanceof OnDialogCloseListener) {
             ((OnDialogCloseListener) activity).onDialogClose(dialog);
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+        super.onCreate(savedInstanceState);
     }
 }
