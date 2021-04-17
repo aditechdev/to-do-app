@@ -4,6 +4,24 @@ public class RVModel {
     private int id, status;
     private String task;
 
+    public RVModel(int id, int status, String task) {
+        this.id = id;
+        this.status = status;
+        this.task = task;
+    }
+
+    public RVModel() {
+    }
+
+    @Override
+    public String toString() {
+        return "RVModel{" +
+                "id=" + id +
+                ", status=" + status +
+                ", task='" + task + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }
