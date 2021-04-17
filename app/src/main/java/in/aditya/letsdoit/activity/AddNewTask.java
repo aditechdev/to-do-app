@@ -24,30 +24,36 @@ import in.aditya.letsdoit.utils.DataBaseHandler;
 
 public class AddNewTask extends BottomSheetDialogFragment {
 
+    // TODO 1: REMOVE WARNING
 
-    public static final String TAG  = "AddNewTask";
+
+    //    -----------------------------------------------------TAG DECLARATION    ------------------------------------------------------------ //
+
+    public static final String TAG = "AddNewTask";
+
+    //    ---------------------------------------------------VARIABLE DECLARATION   ------------------------------------------------------------ //
 
 
-//    Widget
     private EditText mEditText;
     private Button mSaveButton;
-
     private DataBaseHandler myDb;
 
-    public static AddNewTask newInstance(){
+    //      CONSTRUCTOR
+
+    public static AddNewTask newInstance() {
         return new AddNewTask();
     }
+
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.new_entry , container , false);
+        View v = inflater.inflate(R.layout.new_entry, container, false);
         return v;
-
     }
 
-
+    //    ------------------------------------------------- ON VIEW CREATED METHOD     ------------------------------------------------------- //
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -60,15 +66,20 @@ public class AddNewTask extends BottomSheetDialogFragment {
         boolean isUpdate = false;
 
         Bundle bundle = getArguments();
-        if (bundle != null){
+        if (bundle != null) {
             isUpdate = true;
             String task = bundle.getString("task");
             mEditText.setText(task);
 
-            if (task.length() > 0 ){
+            //      DISABLE BUTTON
+
+            if (task.length() > 0) {
                 mSaveButton.setEnabled(false);
             }
         }
+
+        //      TO CHECK TEXT CHANGE
+
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,14 +88,13 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")){
+                if (s.toString().equals("")) {
                     mSaveButton.setEnabled(false);
                     mSaveButton.setBackgroundColor(Color.GRAY);
-                }else {
+                } else {
                     mSaveButton.setEnabled(true);
                     mSaveButton.setBackgroundColor(getResources().getColor(R.color.design_default_color_primary));
                 }
-
             }
 
             @Override
@@ -97,9 +107,15 @@ public class AddNewTask extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String text = mEditText.getText().toString();
-                if (finalIsUpdate){
-                    myDb.updateTask(bundle.getInt("id") , text);
-                }else {
+
+                //   TO UPDATE THE TASK
+
+                if (finalIsUpdate) {
+                    myDb.updateTask(bundle.getInt("id"), text);
+                }
+
+                //      TO CREATE NEW TASK
+                else {
                     RVModel item = new RVModel();
                     item.setTask(text);
                     item.setStatus(0);
@@ -109,109 +125,16 @@ public class AddNewTask extends BottomSheetDialogFragment {
             }
         });
     }
+
+    //    ------------------------------------------------ ON DISMISS ACTIVITY   ------------------------------------------ //
+
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         Activity activity = getActivity();
 
-        if (activity instanceof OnDialogCloseListener){
-            ((OnDialogCloseListener)activity).onDialogClose(dialog);
+        if (activity instanceof OnDialogCloseListener) {
+            ((OnDialogCloseListener) activity).onDialogClose(dialog);
         }
     }
 }
-
-
-
-//
-//    public static final String TAG = "ActionButtonDialog";
-//    private EditText newTask;
-//    private Button saveButton;
-//    private DataBaseHandler dataBaseHandler;
-//
-//    public static AddNewTask newInstance(){
-//        return new AddNewTask();
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setStyle(STYLE_NORMAL, R.style.DialogStyle);
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-//        View view = inflater.inflate(R.layout.new_entry, container, false);
-//        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//        return view;
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view,@NonNull Bundle savedInstanceState){
-//        super.onViewCreated(view, savedInstanceState);
-//        newTask = getView().findViewById(R.id.et_new_task);
-//        saveButton = getView().findViewById(R.id.btn_new_task);
-//
-//        dataBaseHandler = new DataBaseHandler(getActivity());
-//        dataBaseHandler.openDataBase();
-//
-//        boolean isUpdate = false;
-//        final Bundle bundle = getArguments();
-//        if (bundle != null){
-//            isUpdate = true;
-//            String task = bundle.getString("task");
-//            newTask.setText(task);
-//            if (task.length()>0)
-//                saveButton.setTextColor(ContextCompat.getColor(getContext(),R.color.design_default_color_primary_dark));
-//        }
-//        newTask.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                if (s.toString().equals("")){
-//                    saveButton.setEnabled(false);
-//                    saveButton.setTextColor(Color.GRAY);
-//                }else {
-//                    saveButton.setEnabled(true);
-//                    saveButton.setTextColor(ContextCompat.getColor(getContext(),R.color.design_default_color_primary_dark));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//
-//        boolean finalIsUpdate = isUpdate;
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String text = newTask.getText().toString();
-//                if (finalIsUpdate){
-//                    dataBaseHandler.updateTask(bundle.getInt("id"), text);
-//                }else {
-//                    RVModel task = new RVModel();
-//                    task.setTask(text);
-//                    task.setStatus(0);
-//                    dataBaseHandler.insertTask(task);
-//                }
-//
-//                dismiss();
-//            }
-//        });
-//    }
-//    @Override
-//    public void onDismiss(DialogInterface dialogInterface){
-//        Activity activity = getActivity();
-//        if (activity instanceof OnDialogCloseListener){
-//            ((OnDialogCloseListener)activity).handleDialogClose(dialogInterface);
-//        }
-//    }
-
