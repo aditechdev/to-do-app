@@ -2,12 +2,16 @@ package in.aditya.letsdoit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import in.aditya.letsdoit.adapter.RVAdapter;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
@@ -59,5 +63,20 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             adapter.editItem(position);
         }
 
+    }
+
+    //    -----------------------------------------------DECORATOR FOR LEFT AND RIGHT SWIPE------------------------------------------------- //
+
+
+    @Override
+    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                .addSwipeLeftBackgroundColor(ContextCompat.getColor(adapter.getContext(), R.color.design_default_color_primary_dark))
+                .addSwipeLeftActionIcon(R.drawable.ic_edit_24)
+                .addSwipeRightBackgroundColor(Color.RED)
+                .addSwipeRightActionIcon(R.drawable.ic_delete_24)
+                .create()
+                .decorate();
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 }
