@@ -11,11 +11,9 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
-import in.aditya.letsdoit.activity.AddNewTask;
+import in.aditya.letsdoit.activity.BottomSheetFragment;
 import in.aditya.letsdoit.activity.MainActivity;
 import in.aditya.letsdoit.R;
 import in.aditya.letsdoit.model.RVModel;
@@ -104,7 +102,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
         bundle.putInt("id" , item.getId());
         bundle.putString("task" , item.getTask());
 
-        AddNewTask task = new AddNewTask();
+        BottomSheetFragment task = new BottomSheetFragment();
         task.setArguments(bundle);
         task.show(activity.getSupportFragmentManager() , task.getTag());
 

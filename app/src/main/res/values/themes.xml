@@ -18,9 +18,8 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-    <style name="splashScreen" parent="Theme.AppCompat.DayNight.NoActionBar">
-    <item name="android:windowBackground">@drawable/splash_screen</item>
-    </style>
+
+
 <!--    Theme.Design.Light.BottomSheetDialog-->
 
     <style name="DialogStyle" parent="Theme.Design.BottomSheetDialog">

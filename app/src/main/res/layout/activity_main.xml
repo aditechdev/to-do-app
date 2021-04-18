@@ -24,7 +24,18 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/des_fab_add_task"
         android:layout_margin="32dp"
-        android:backgroundTint="@android:color/holo_blue_dark"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_add_32" />
+
+    <ImageView
+        android:id="@+id/image_main"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/background_image"
+        android:layout_centerInParent="true"/>
+
+
+
 
 </RelativeLayout>

@@ -140,6 +140,16 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return modelList;
     }
 
+//    -------------------------------------------------   Get Count     ------------------------------------------------------------------ //
+
+//    public int getCount(){
+//        String query = "SELECT  * FROM " + TABLE_NAME;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        return cursor.getCount();
+//
+//    }
+
 }
 
 //    -------------------------------------------------   END OF CODE     ------------------------------------------------------------------ //

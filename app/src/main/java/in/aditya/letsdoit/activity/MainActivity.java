@@ -2,8 +2,12 @@ package in.aditya.letsdoit.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     private DataBaseHandler dataBaseHandler;
     private List<RVModel> mList;
     private RVAdapter adapter;
+    private ImageView imageBlank;
+
 
     //    -------------------------------------------------- ON CREATE METHOD   ------------------------------------------------------------ //
 
@@ -42,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
         mRecyclerView = findViewById(R.id.recycler_view);
         fab = findViewById(R.id.fab_add_task);
+        imageBlank = findViewById(R.id.image_main);
         dataBaseHandler = new DataBaseHandler(this);
         mList = new ArrayList<>();
         adapter = new RVAdapter(dataBaseHandler, MainActivity.this);
@@ -55,14 +62,17 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         //       TO GET ALL THE TASK SAVED
 
         mList = dataBaseHandler.getAllTasks();
+        Collections.reverse(mList);
+        adapter.setTasks(mList);
 
+       // mList = dataBaseHandler.getAllTasks();
         //        TO GET THE LIST IN REVERSE FORM, UPDATED FIRST WILL BE LAST
 
-        Collections.reverse(mList);
+       // Collections.reverse(mList);
 
         //         SET ADAPTER
 
-        adapter.setTasks(mList);
+       // adapter.setTasks(mList);
 
         //          ON CLICK LISTENER ON FLOATING ACTION BUTTON
 
@@ -72,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
                 //      GET ADD TASK BOTTOM SUPPORTED  FRAGMENT
 
-                AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
+                BottomSheetFragment.newInstance().show(getSupportFragmentManager(), BottomSheetFragment.TAG);
 
             }
         });
@@ -82,15 +92,40 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
     }
 
+
+
+
+
+
+
+
     //    ---------------------------------------------------ON DIALOGUE BOX CLOSE METHOD   ----------------------------------------- //
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-
         mList = dataBaseHandler.getAllTasks();
         Collections.reverse(mList);
         adapter.setTasks(mList);
         adapter.notifyDataSetChanged();
 
+
+    }
+
+    //    --------------------------------------------------   OPTION MENU   ----------------------------------------- //
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // TODO 1: Inflate menu to sort
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // TODO 2: Handle menu items
+
+        return super.onOptionsItemSelected(item);
     }
 }

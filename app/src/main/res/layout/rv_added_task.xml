@@ -40,7 +40,7 @@
             android:layout_marginTop="15dp"
             android:textSize="15sp"
             android:layout_below="@id/mCheckBox"
-            android:layout_toRightOf="@id/recyclerTextDate"/>
+            android:layout_toEndOf="@id/recyclerTextDate"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

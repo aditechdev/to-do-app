@@ -1,13 +1,15 @@
 package in.aditya.letsdoit.model;
 
-public class RVModel {
+public class RVModel{
     private int id, status;
     private String task;
+
 
     public RVModel(int id, int status, String task) {
         this.id = id;
         this.status = status;
         this.task = task;
+
     }
 
     public RVModel() {
@@ -45,4 +47,6 @@ public class RVModel {
     public void setTask(String task) {
         this.task = task;
     }
+
+
 }

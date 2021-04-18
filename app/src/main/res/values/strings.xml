@@ -5,4 +5,5 @@
     <string name="rv_element_task">This is a simple task inside the application</string>
     <string name="et_add_task">Create New task</string>
     <string name="btn_save">Save</string>
+    <string name="splash_text">Lets TODO</string>
 </resources>
