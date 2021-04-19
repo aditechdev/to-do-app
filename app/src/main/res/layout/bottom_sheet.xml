@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:background="@color/background">
+    android:background="@color/colorPrimaryDark">
 
         <com.google.android.material.textfield.TextInputLayout
 
@@ -27,6 +27,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="25dp"
+            app:hintTextColor="@color/accentColor"
             android:hint="@string/et_add_task">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -38,7 +39,7 @@
                 android:imeOptions="actionDone"
 
 
-                android:textColor="@color/textColorPrimary"
+                android:textColor="@color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:ignore="KeyboardInaccessibleWidget"
                 android:inputType="textMultiLine"/>
@@ -46,45 +47,76 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/imageButtonCalender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <CheckBox
+            android:id="@+id/notification_checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+
             android:layout_below="@id/et_new_task_layout"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/colorPrimaryDark"
-            android:src="@drawable/ic_calendar_today_24" />
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="9dp"
+            android:layout_toStartOf="@+id/btn_new_task"
+            android:button="@drawable/selector_notification"
+            app:useMaterialThemeColors="false" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imageButtonCalender"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/et_new_task_layout"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="15dp"
+
+                android:background="@color/iconBackground"
+                android:src="@drawable/ic_calendar_today_24" />
 
         <TextView
             android:id="@+id/tvCalender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_new_task_layout"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="18dp"
             android:layout_toEndOf="@id/imageButtonCalender"
-            android:textColor="@color/textColorSecondary" />
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="visible" />
+
+
+
+
+
+
+
+<!--        TODO :GROUP calender and time -->
+
+
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/imageButtonTime"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_toEndOf="@id/tvCalender"
 
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@id/et_new_task_layout"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
-            android:background="@color/colorPrimaryDark"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparentColor"
             android:src="@drawable/ic_time_24" />
+
+
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             android:layout_below="@id/et_new_task_layout"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="18dp"
             android:layout_toEndOf="@id/imageButtonTime"
-            android:textColor="@color/textColorSecondary" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_new_task"

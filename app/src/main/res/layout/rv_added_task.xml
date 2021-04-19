@@ -1,46 +1,168 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_width="match_parent"
-    app:cardElevation="3dp"
+    app:cardElevation="4dp"
     app:cardCornerRadius="8dp"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    android:background="@color/background">
+    android:background="@color/white">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:background="@color/background">
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/mCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColorPrimary"
-            android:text="@string/rv_element_task"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:buttonTint="@color/colorPrimaryDark"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp">
 
-        <TextView
-            android:id="@+id/recyclerTextDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/mCheckBox"
-            android:layout_marginTop="15dp"
-            android:textSize="15sp"
-            android:textColor="@color/textColorSecondary"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerTextTime"
-            android:layout_marginTop="15dp"
-            android:textSize="15sp"
-            android:layout_below="@id/mCheckBox"
-            android:layout_toEndOf="@id/recyclerTextDate"/>
+            <TextView
+                android:id="@+id/recyclerTextDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DAY"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:textSize="15sp"
+                android:textColor="@color/textColorSecondary"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/recyclerTextDate"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textSize="30sp"
+                android:textColor="@color/accentColor"/>
+
+            <TextView
+                android:id="@+id/recyclerTextMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Month"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/textColorSecondary"/>
+
+            <TextView
+                android:id="@+id/recyclerTextYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:textColor="@color/textColorSecondary"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+
+                    android:textColor="#5FC35F"
+                    android:id="@+id/recyclerTextTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_marginStart="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5FC35F"
+                    android:text="AM"
+                    android:textAllCaps="true"/>
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="2dp"
+            android:background="@color/accentColor"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginStart="2dp"/>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:button="@drawable/selector_notification"/>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/mCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/accentColor"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/rv_element_task"
+                android:textColor="@color/textColorPrimary"
+                android:textColorHint="@color/textColorHint" />
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="17dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="TextView Description"
+                    android:textSize="15sp" />
+
+
+
+
+            </ScrollView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

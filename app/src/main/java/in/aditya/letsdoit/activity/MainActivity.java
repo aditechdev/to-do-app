@@ -2,6 +2,7 @@ package in.aditya.letsdoit.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,12 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     private List<RVModel> mList;
     private RVAdapter adapter;
     private ImageView imageBlank;
+
+    // TODO 1C: ADD TIME STAMP HERE
+
+//    //Sort Option
+//    String orderByNewest = ADDED_TIME_STAMP + "DESC";
+//    String orderByOldest = ADDED_TIME_STAMP + "ASC";
 
 
     //    -------------------------------------------------- ON CREATE METHOD   ------------------------------------------------------------ //
@@ -116,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO 1: Inflate menu to sort
+        // TODO 1a: Inflate menu to sort
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -124,8 +133,14 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        // TODO 2: Handle menu items
+        // TODO 1b: Handle menu items
+        int id = item.getItemId();
+        if (id==R.id.action_sort){
+
+
+        }
 
         return super.onOptionsItemSelected(item);
+
     }
 }

@@ -6,4 +6,6 @@
     <string name="et_add_task">Create New task</string>
     <string name="btn_save">Save</string>
     <string name="splash_text">Lets TODO</string>
+    <string name="menu_sort_by_latest">Sort By Latest</string>
+    <string name="blank_image">Blank Image</string>
 </resources>

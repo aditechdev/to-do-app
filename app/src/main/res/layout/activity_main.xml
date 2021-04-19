@@ -9,12 +9,22 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:nestedScrollingEnabled="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <ImageView
+        android:id="@+id/image_main"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/background_image"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/blank_image" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_task"
@@ -25,15 +35,9 @@
         android:contentDescription="@string/des_fab_add_task"
         android:layout_margin="32dp"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:src="@drawable/ic_add_32" />
-
-    <ImageView
-        android:id="@+id/image_main"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/background_image"
-        android:layout_centerInParent="true"/>
+        app:rippleColor="@color/rippleColor"
+        android:src="@drawable/ic_add_32"
+        app:useMaterialThemeColors="false"/>
 
 
 

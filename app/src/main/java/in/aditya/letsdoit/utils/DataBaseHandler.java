@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String KEY_ID = "ID";
     public static final String KEY_TASK_NAME = "TASK_NAME";
     public static final String KEY_TASK_STATUS = "TASK_STATUS";
+//    public static final String KEY_YYYY = "TASK_YYYY";
+//    KEY_YYYY + "TEXT
 
     //    ------------------------------------------- Other Declaration ----------------------------------------------------------------- //
 
@@ -65,6 +69,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TASK_NAME, model.getTask());
         values.put(KEY_TASK_STATUS, 0);
+//        values.put(KEY_YYYY, model.getyyyy());
         long insert = db.insert(TABLE_NAME, null, values);
         if (insert == -1) {
             Toast.makeText(context, "Failed to Save", Toast.LENGTH_SHORT).show();
@@ -117,6 +122,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         Cursor cursor = null;
         db.beginTransaction();
         try {
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -125,6 +131,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                         task.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                         task.setTask(cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME)));
                         task.setStatus(cursor.getInt(cursor.getColumnIndex(KEY_TASK_STATUS)));
+//                        task.setyyyy(String.valueOf(simpleDateFormat.parse(cursor.getString(Integer.parseInt(KEY_YYYY)))));
                         modelList.add(task);
 
                     } while (cursor.moveToNext());

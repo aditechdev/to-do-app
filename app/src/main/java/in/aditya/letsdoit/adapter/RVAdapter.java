@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +52,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final RVModel item = mList.get(position);
+//        holder.recyclerTextYear.setText(item.getyyyy());
         holder.mCheckBox.setText(item.getTask());
         holder.mCheckBox.setOnCheckedChangeListener(null); // this is update
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
@@ -120,9 +122,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         CheckBox mCheckBox;
+//        TextView recyclerTextYear;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mCheckBox = itemView.findViewById(R.id.mCheckBox);
+//            recyclerTextYear = itemView.findViewById(R.id.recyclerTextYear);
 
         }
     }

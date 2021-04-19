@@ -5,15 +5,19 @@ public class RVModel{
     private String task;
 
 
-    public RVModel(int id, int status, String task) {
+
+
+    public RVModel(int id, int status, String task, String yyyy) {
         this.id = id;
         this.status = status;
         this.task = task;
+
 
     }
 
     public RVModel() {
     }
+
 
     @Override
     public String toString() {
@@ -47,6 +51,5 @@ public class RVModel{
     public void setTask(String task) {
         this.task = task;
     }
-
 
 }
