@@ -83,15 +83,12 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
         //          ON CLICK LISTENER ON FLOATING ACTION BUTTON
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fab.setOnClickListener(v -> {
 
-                //      GET ADD TASK BOTTOM SUPPORTED  FRAGMENT
+            //      GET ADD TASK BOTTOM SUPPORTED  FRAGMENT
 
-                BottomSheetFragment.newInstance().show(getSupportFragmentManager(), BottomSheetFragment.TAG);
+            BottomSheetFragment.newInstance().show(getSupportFragmentManager(), BottomSheetFragment.TAG);
 
-            }
         });
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(adapter));

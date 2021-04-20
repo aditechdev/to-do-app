@@ -9,8 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +27,16 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "ID";
     public static final String KEY_TASK_NAME = "TASK_NAME";
+    private static final String KEY_TASK_DATE = "TASK_DATE";
+    private static final String KEY_TASK_TIME = "TASK_TIME";
     public static final String KEY_TASK_STATUS = "TASK_STATUS";
+
 //    public static final String KEY_YYYY = "TASK_YYYY";
 //    KEY_YYYY + "TEXT
 
     //    ------------------------------------------- Other Declaration ----------------------------------------------------------------- //
 
-    private Context context;
+    private final Context context;
     private SQLiteDatabase db;
 
     //    ------------------------------------------- DATA BASE HANDLER ----------------------------------------------------------------- //
@@ -49,7 +50,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_STATUS + " INTEGER)";
+        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_DATE + " TEXT, "  + KEY_TASK_TIME + " TEXT, " + KEY_TASK_STATUS + " INTEGER)";
+
         db.execSQL(createTableStatement);
     }
 
@@ -60,6 +62,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
+
     }
 
     //    ------------------------------------------------- TO ADD TASK ------------------------------------------------------------------ //
@@ -69,6 +72,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TASK_NAME, model.getTask());
         values.put(KEY_TASK_STATUS, 0);
+        values.put(KEY_TASK_DATE, model.getDate());
+        values.put(KEY_TASK_TIME, model.getTime());
+
+
 //        values.put(KEY_YYYY, model.getyyyy());
         long insert = db.insert(TABLE_NAME, null, values);
         if (insert == -1) {
@@ -83,15 +90,54 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public void updateTask(int id, String task) {
         db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_TASK_NAME, task);
-        int update = db.update(TABLE_NAME, values, "ID=?", new String[]{String.valueOf(id)});
+        ContentValues taskValue = new ContentValues();
+        taskValue.put(KEY_TASK_NAME, task);
+
+        int update = db.update(TABLE_NAME, taskValue, "ID=?", new String[]{String.valueOf(id)});
+        
+        
         if (update == -1) {
             Toast.makeText(context, "Your File not Updated", Toast.LENGTH_SHORT).show();
 
         } else {
             Toast.makeText(context, "Your TODO Updated ", Toast.LENGTH_SHORT).show();
         }
+        db.close();
+    }
+
+    public void updateDate(int id, String date) {
+        db = this.getWritableDatabase();
+        ContentValues dateValues = new ContentValues();
+
+        dateValues.put(KEY_TASK_DATE, date);
+
+        int update = db.update(TABLE_NAME, dateValues, "ID=?", new String[]{String.valueOf(id)});
+
+
+        if (update == -1) {
+            Toast.makeText(context, "Your File not Updated", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(context, "Your TODO Updated ", Toast.LENGTH_SHORT).show();
+        }
+        db.close();
+    }
+
+    public void updateTime(int id,  String time) {
+        db = this.getWritableDatabase();
+        ContentValues timeValues = new ContentValues();
+
+        timeValues.put(KEY_TASK_TIME, time);
+        int update = db.update(TABLE_NAME, timeValues, "ID=?", new String[]{String.valueOf(id)});
+
+
+        if (update == -1) {
+            Toast.makeText(context, "Your File not Updated", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(context, "Your TODO Updated ", Toast.LENGTH_SHORT).show();
+        }
+
         db.close();
     }
 
@@ -119,11 +165,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public List<RVModel> getAllTasks() {
         List<RVModel> modelList = new ArrayList<>();
         db = this.getWritableDatabase();
-        Cursor cursor = null;
         db.beginTransaction();
-        try {
+        try (Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null)) {
 //            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -131,6 +175,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                         task.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
                         task.setTask(cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME)));
                         task.setStatus(cursor.getInt(cursor.getColumnIndex(KEY_TASK_STATUS)));
+                        task.setDate(cursor.getString(cursor.getColumnIndex(KEY_TASK_DATE)));
+                        task.setTime(cursor.getString(cursor.getColumnIndex(KEY_TASK_TIME)));
 //                        task.setyyyy(String.valueOf(simpleDateFormat.parse(cursor.getString(Integer.parseInt(KEY_YYYY)))));
                         modelList.add(task);
 
@@ -140,12 +186,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             }
         } finally {
             db.endTransaction();
-            cursor.close();
             db.close();
 
         }
         return modelList;
     }
+
+
+
 
 //    -------------------------------------------------   Get Count     ------------------------------------------------------------------ //
 

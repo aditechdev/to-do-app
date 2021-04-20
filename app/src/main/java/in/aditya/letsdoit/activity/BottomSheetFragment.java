@@ -20,7 +20,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.BreakIterator;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -37,12 +37,10 @@ import in.aditya.letsdoit.R;
 import in.aditya.letsdoit.model.RVModel;
 import in.aditya.letsdoit.utils.DataBaseHandler;
 
-public class BottomSheetFragment extends BottomSheetDialogFragment {
+public class BottomSheetFragment extends BottomSheetDialogFragment{
 
 
-
-    // TODO 1: REMOVE WARNING
-
+    // TODO 1: REMOVE WARNINGS
 
     //    -----------------------------------------------------TAG DECLARATION    ------------------------------------------------------------ //
 
@@ -51,18 +49,21 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     //    ---------------------------------------------------VARIABLE DECLARATION   ------------------------------------------------------------ //
 
 
+    private static TextView dd_mm_yy;
+    @SuppressLint("StaticFieldLeak")
+    private static TextView hh_mm_am_pm;
+    //    private static String yyyy_mm_dd_hh_mm;
+
     private TextInputEditText mEditText;
     private Button mSaveButton;
     private DataBaseHandler myDb;
+    // Calender and time
     private ImageButton ibSelectCalender;
     private ImageButton ibSelectClock;
+    private  int time;
 
-    // Calender and time
 
-    private static TextView dd_mm_yy;
-    private static TextView hh_mm_am_pm;
-//    private static String yyyy_mm_dd_hh_mm;
-//    private static String yyyy;
+    private static String yyyy;
 //    private static int mm;
 //    private static int dd;
 //    private static int hh;
@@ -71,15 +72,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //    private static String day_mm_date_year_hh_mm;
 //    private static String am_pm;
 
-
-
-
-
-
-
     //      CONSTRUCTOR
-
-
     public static BottomSheetFragment newInstance() {
         return new BottomSheetFragment();
     }
@@ -90,19 +83,14 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet, container, false);
-                ibSelectCalender = v.findViewById(R.id.imageButtonCalender);
+        ibSelectCalender = v.findViewById(R.id.imageButtonCalender);
         ibSelectClock = v.findViewById(R.id.imageButtonTime);
         dd_mm_yy = v.findViewById(R.id.tvCalender);
         hh_mm_am_pm = v.findViewById(R.id.tvTime);
         mEditText = v.findViewById(R.id.et_new_task);
         mSaveButton = v.findViewById(R.id.btn_new_task);
         myDb = new DataBaseHandler(getActivity());
-
-
-
-
-
-
+//        String yearText;
         return v;
     }
 
@@ -112,15 +100,44 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+        ibSelectCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogFragment newFragment = new DatePickerFragment();
+                assert getFragmentManager() != null;
+                newFragment.show(getFragmentManager(), "datePicker");
+
+            }
+        });
+
+        ibSelectClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timeFragment = new TimePickerFragment();
+                timeFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
 
 
         boolean isUpdate = false;
+
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true;
             String task = bundle.getString("task");
+            String date = bundle.getString("date");
+            String time = bundle.getString("time");
+
+
             mEditText.setText(task);
+            dd_mm_yy.setText(date);
+            hh_mm_am_pm.setText(time);
+
+
+
+
 
 
             //      DISABLE BUTTON
@@ -130,40 +147,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             }
         }
 
-        ibSelectCalender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                DialogFragment newFragment = new DatePickerFragment();
-            assert getFragmentManager() != null;
-            newFragment.show(getFragmentManager(), "datePicker");
-
-            }
-        });
-
-
-//        ibSelectCalender.setOnClickListener(v -> {
-//            DialogFragment newFragment = new DatePickerFragment();
-//            assert getFragmentManager() != null;
-//            newFragment.show(getFragmentManager(), "datePicker");
-//        });
-
-
-        ibSelectClock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment timeFragment = new TimePickerFragment();
-                timeFragment.show(getFragmentManager(),"timePicker");
-            }
-        });
 
 
         //      TO CHECK TEXT CHANGE
-
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -185,30 +175,41 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         boolean finalIsUpdate = isUpdate;
         mSaveButton.setOnClickListener(v -> {
             String text = Objects.requireNonNull(mEditText.getText()).toString();
-//            String yyyyText = yyyy.toString();
+//          String yearText = yyyy.toString();
+            String date = (dd_mm_yy.getText()).toString();
+            String time = (hh_mm_am_pm.getText()).toString();
+
 
             //   TO UPDATE THE TASK
 
             if (finalIsUpdate) {
                 myDb.updateTask(bundle.getInt("id"), text);
+                myDb.updateDate(bundle.getInt("id"), date);
+                myDb.updateTime(bundle.getInt("id"), time);
+
+
+
             }
 
             //      TO CREATE NEW TASK
             else {
 
+
                 RVModel item = new RVModel();
                 item.setTask(text);
                 item.setStatus(0);
-//                item.setyyyy(yyyyText);
-//
+                item.setDate(date);
+                item.setTime(time);
+                Log.d("MyTAG", date);
+                Log.d("My Tag", time );
                 myDb.insertTask(item);
             }
             dismiss();
 
-//            Log.v("This is year ", String.valueOf(+ yyyy));
         });
 
     }
+
 
     //    ------------------------------------------------ ON DISMISS ACTIVITY   ------------------------------------------ //
 
@@ -218,8 +219,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         super.onDismiss(dialog);
         Activity activity = getActivity();
 
-        if (activity instanceof OnDialogCloseListener){
-            ((OnDialogCloseListener)activity).onDialogClose(dialog);
+        if (activity instanceof OnDialogCloseListener) {
+            ((OnDialogCloseListener) activity).onDialogClose(dialog);
         }
 
     }
@@ -230,9 +231,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+
     // ---------------------------------- Date Here-----------------------------------------------------------//
 
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
 
 
 
@@ -240,9 +243,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
             return new DatePickerDialog(getActivity(), this, year, month, dayOfMonth);
         }
 
@@ -253,63 +256,38 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
             dd_mm_yy.setText(dayOfMonth + " / " + (month + 1) + " / "
                     + year);
-
-//            mm = month;
-//            yyyy = String.valueOf(year);
-
-
-
-
-
-
+            yyyy = String.valueOf(year);
         }
-
-
     }
-
-//    public static String getYyyy() {
-//        return yyyy;
-//    }
-//
-//    public static void setYyyy(String yyyy) {
-//        BottomSheetFragment.yyyy = yyyy;
-//    }
 
     //    =============================================== Time ======================================================//
 
-    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
-                int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
-                int min = c.get(Calendar.MINUTE);
+            int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
+            int min = c.get(Calendar.MINUTE);
 
 
             return new TimePickerDialog(getActivity(), this, hour_of_day, min, DateFormat.is24HourFormat(getActivity()));
 
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
-        public void onTimeSet(TimePicker view, int hour_of_day , int minute) {
+        public void onTimeSet(TimePicker view, int hour_of_day, int minute) {
 
-            String AM_PM ;
-            if (hour_of_day < 12){
+            String AM_PM;
+            if (hour_of_day < 12) {
                 AM_PM = "AM";
-            }else {
+            } else {
                 AM_PM = "PM";
             }
 
             hh_mm_am_pm.setText(hour_of_day + " : " + minute + " " + AM_PM);
-
-//            hh = hour_of_day;
-//            min = minute;
-//            am_pm = AM_PM;
-
         }
     }
-
-
-
 
 }

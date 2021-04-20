@@ -1,21 +1,21 @@
 package in.aditya.letsdoit.model;
 
+
+
 public class RVModel{
     private int id, status;
-    private String task;
+    private String date, time, task;
 
-
-
-
-    public RVModel(int id, int status, String task, String yyyy) {
+    public RVModel(int id, int status, String date, String time, String task) {
         this.id = id;
         this.status = status;
+        this.date = date;
+        this.time = time;
         this.task = task;
-
-
     }
 
     public RVModel() {
+
     }
 
 
@@ -24,6 +24,8 @@ public class RVModel{
         return "RVModel{" +
                 "id=" + id +
                 ", status=" + status +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
                 ", task='" + task + '\'' +
                 '}';
     }
@@ -44,6 +46,22 @@ public class RVModel{
         this.status = status;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getTask() {
         return task;
     }
@@ -51,5 +69,4 @@ public class RVModel{
     public void setTask(String task) {
         this.task = task;
     }
-
 }

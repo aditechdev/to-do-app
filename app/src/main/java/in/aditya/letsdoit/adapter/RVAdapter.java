@@ -23,13 +23,13 @@ import in.aditya.letsdoit.utils.DataBaseHandler;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
 
 
-    // TODO 4: REMOVE WARNING
+
 
     //    --------------------------------------------------------  VARIABLE DECLARATION   ------------------------------------------------ //
 
     private List<RVModel> mList;
-    private MainActivity activity;
-    private DataBaseHandler myDb;
+    private final MainActivity activity;
+    private final DataBaseHandler myDb;
 
     //    --------------------------------------------------  CONSTRUCTOR    ------------------------------------------------------------ //
 
@@ -53,6 +53,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final RVModel item = mList.get(position);
 //        holder.recyclerTextYear.setText(item.getyyyy());
+//        TODO : Check here
+        holder.timeTextView.setText(item.getTime());
+        holder.dateTextView.setText(item.getDate());
         holder.mCheckBox.setText(item.getTask());
         holder.mCheckBox.setOnCheckedChangeListener(null); // this is update
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
@@ -103,10 +106,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
         Bundle bundle = new Bundle();
         bundle.putInt("id" , item.getId());
         bundle.putString("task" , item.getTask());
+        bundle.putString("date", item.getDate());
+        bundle.putString("time", item.getTime());
 
-        BottomSheetFragment task = new BottomSheetFragment();
-        task.setArguments(bundle);
-        task.show(activity.getSupportFragmentManager() , task.getTag());
+        BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+        bottomSheetFragment.setArguments(bundle);
+
+        bottomSheetFragment.show(activity.getSupportFragmentManager() , bottomSheetFragment.getTag());
+
+
+
+
+
 
     }
 
@@ -122,10 +133,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         CheckBox mCheckBox;
+        TextView dateTextView;
+        TextView timeTextView;
 //        TextView recyclerTextYear;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mCheckBox = itemView.findViewById(R.id.mCheckBox);
+            dateTextView = itemView.findViewById(R.id.tv_description);
+            timeTextView = itemView.findViewById(R.id.recyclerTextDay);
 //            recyclerTextYear = itemView.findViewById(R.id.recyclerTextYear);
 
         }

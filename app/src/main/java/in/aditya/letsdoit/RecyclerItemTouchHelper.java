@@ -61,6 +61,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             dialog.show();
         } else {
             adapter.editItem(position);
+
+
         }
 
     }
