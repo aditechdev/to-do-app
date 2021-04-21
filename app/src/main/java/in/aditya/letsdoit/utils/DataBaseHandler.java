@@ -29,6 +29,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String KEY_TASK_NAME = "TASK_NAME";
     private static final String KEY_TASK_DATE = "TASK_DATE";
     private static final String KEY_TASK_TIME = "TASK_TIME";
+    private static final String KEY_TASK_DATE_TIME = "TASK_DATE_TIME";
+    public static final String KEY_TASK_ALARM = "TASK_ALARM";
     public static final String KEY_TASK_STATUS = "TASK_STATUS";
 
 //    public static final String KEY_YYYY = "TASK_YYYY";
@@ -50,7 +52,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_DATE + " TEXT, "  + KEY_TASK_TIME + " TEXT, " + KEY_TASK_STATUS + " INTEGER)";
+        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_DATE + " TEXT, "  + KEY_TASK_TIME + " TEXT, " + KEY_TASK_DATE_TIME + " TEXT, " + KEY_TASK_ALARM + " INTEGER, " + KEY_TASK_STATUS + " INTEGER)";
 
         db.execSQL(createTableStatement);
     }
@@ -73,6 +75,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_TASK_NAME, model.getTask());
         values.put(KEY_TASK_STATUS, 0);
         values.put(KEY_TASK_DATE, model.getDate());
+        values.put(KEY_TASK_DATE_TIME, model.getDatetime());
+        values.put(KEY_TASK_ALARM, model.getAlarm());
         values.put(KEY_TASK_TIME, model.getTime());
 
 
@@ -105,6 +109,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //    ------------------------------------------------- Update Date ---------------------------------------------------- //
+
     public void updateDate(int id, String date) {
         db = this.getWritableDatabase();
         ContentValues dateValues = new ContentValues();
@@ -123,11 +129,33 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //    ------------------------------------------------- Update Time ---------------------------------------------------- //
+
     public void updateTime(int id,  String time) {
         db = this.getWritableDatabase();
         ContentValues timeValues = new ContentValues();
 
         timeValues.put(KEY_TASK_TIME, time);
+        int update = db.update(TABLE_NAME, timeValues, "ID=?", new String[]{String.valueOf(id)});
+
+
+        if (update == -1) {
+            Toast.makeText(context, "Your File not Updated", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(context, "Your TODO Updated ", Toast.LENGTH_SHORT).show();
+        }
+
+        db.close();
+    }
+
+    //    ------------------------------------------------- Update Date and time  ---------------------------------------------------- //
+
+    public void updateDateTime(int id, String dateTime) {
+        db = this.getWritableDatabase();
+        ContentValues timeValues = new ContentValues();
+
+        timeValues.put(KEY_TASK_DATE_TIME, dateTime);
         int update = db.update(TABLE_NAME, timeValues, "ID=?", new String[]{String.valueOf(id)});
 
 
@@ -151,6 +179,18 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //    ------------------------------------------------- Update Alarm status  ---------------------------------------------------- //
+
+    public void updateAlarm(int id, int alarm) {
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_TASK_ALARM, alarm);
+        db.update(TABLE_NAME, values, "ID=?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+
+
     //    ---------------------------------------------- DELETE THE TASK --------------------------------------------------------------- //
 
     public void deleteTask(int id) {
@@ -159,15 +199,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //    -------------------------------------------    TO GET ALL THE SAVED TASK   ---------------------------------------------------- //
+    //    -------------------------------------------    TO GET ALL THE SAVED TASK in Date time FOrmat   ---------------------------------------------------- //
 
 
     public List<RVModel> getAllTasks() {
         List<RVModel> modelList = new ArrayList<>();
         db = this.getWritableDatabase();
         db.beginTransaction();
-        try (Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null)) {
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try (Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, KEY_TASK_DATE_TIME, null)) {
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -176,8 +215,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                         task.setTask(cursor.getString(cursor.getColumnIndex(KEY_TASK_NAME)));
                         task.setStatus(cursor.getInt(cursor.getColumnIndex(KEY_TASK_STATUS)));
                         task.setDate(cursor.getString(cursor.getColumnIndex(KEY_TASK_DATE)));
+                        task.setDatetime(cursor.getString(cursor.getColumnIndex(KEY_TASK_DATE_TIME)));
+                        task.setAlarm(cursor.getInt(cursor.getColumnIndex(KEY_TASK_ALARM)));
                         task.setTime(cursor.getString(cursor.getColumnIndex(KEY_TASK_TIME)));
-//                        task.setyyyy(String.valueOf(simpleDateFormat.parse(cursor.getString(Integer.parseInt(KEY_YYYY)))));
                         modelList.add(task);
 
                     } while (cursor.moveToNext());
@@ -192,18 +232,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return modelList;
     }
 
-
-
-
-//    -------------------------------------------------   Get Count     ------------------------------------------------------------------ //
-
-//    public int getCount(){
-//        String query = "SELECT  * FROM " + TABLE_NAME;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//        return cursor.getCount();
-//
-//    }
 
 }
 

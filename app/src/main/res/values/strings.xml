@@ -8,4 +8,6 @@
     <string name="splash_text">Lets TODO</string>
     <string name="menu_sort_by_latest">Sort By Latest</string>
     <string name="blank_image">Blank Image</string>
+    <string name="tv_update_date">Update Date</string>
+    <string name="tv_update_time">Update TIme</string>
 </resources>

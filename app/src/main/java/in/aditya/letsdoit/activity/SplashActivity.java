@@ -2,7 +2,6 @@ package in.aditya.letsdoit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -12,7 +11,6 @@ import in.aditya.letsdoit.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    //  TODO 3: RECREATE SPLASH SCREEN
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -6,11 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:paddingBottom="15dp">
 
         <com.google.android.material.textfield.TextInputLayout
 
@@ -19,16 +21,19 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="14dp"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="14dp"
             android:autofillHints="Enter TODO"
             android:hint="@string/et_add_task"
             app:boxCornerRadiusBottomEnd="5dp"
             app:boxCornerRadiusBottomStart="5dp"
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
-            app:hintTextColor="@color/accentColor">
+            app:hintTextColor="@color/accentColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_new_task"
@@ -41,7 +46,7 @@
 
                 android:inputType="textMultiLine"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 tools:ignore="KeyboardInaccessibleWidget" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -51,25 +56,26 @@
             android:id="@+id/imageButtonCalender"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_below="@id/et_new_task_layout"
-            android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
 
             android:background="@color/iconBackground"
-            android:src="@drawable/ic_calendar_today_24" />
+            android:src="@drawable/ic_calendar_today_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_new_task_layout" />
 
         <TextView
             android:id="@+id/tvCalender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_new_task_layout"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="18dp"
-            android:layout_toEndOf="@id/imageButtonCalender"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="15sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintStart_toEndOf="@id/imageButtonCalender"
+            app:layout_constraintTop_toBottomOf="@id/et_new_task_layout" />
 
         <!--        TODO :GROUP calender and time -->
 
@@ -78,54 +84,56 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
 
-            android:layout_below="@id/et_new_task_layout"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
-            android:layout_toEndOf="@id/tvCalender"
             android:background="@color/transparentColor"
-            android:src="@drawable/ic_time_24" />
+            android:src="@drawable/ic_time_24"
+            app:layout_constraintStart_toEndOf="@id/tvCalender"
+            app:layout_constraintTop_toBottomOf="@id/et_new_task_layout" />
 
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_new_task_layout"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="18dp"
-            android:layout_toEndOf="@id/imageButtonTime"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@id/imageButtonTime"
+            app:layout_constraintTop_toBottomOf="@id/et_new_task_layout" />
 
         <CheckBox
             android:id="@+id/notification_checkbox"
             android:layout_width="30dp"
             android:layout_height="30dp"
-
-
-            android:layout_below="@id/et_new_task_layout"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="9dp"
-            android:layout_toStartOf="@+id/btn_new_task"
+            android:layout_marginTop="32dp"
+            android:background="@color/transparentColor"
             android:button="@drawable/selector_notification"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.121"
+            app:layout_constraintStart_toEndOf="@+id/btn_new_task"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonTime"
             app:useMaterialThemeColors="false" />
 
         <Button
             android:id="@+id/btn_new_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageButtonTime"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/transparent"
+            android:layout_marginTop="20dp"
+            app:useMaterialThemeColors="false"
+            android:background="@color/transparentColor"
             android:elevation="10dp"
-
             android:text="@string/btn_save"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonTime" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

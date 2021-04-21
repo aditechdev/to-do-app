@@ -6,16 +6,16 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,12 +23,13 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.BreakIterator;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -37,46 +38,35 @@ import in.aditya.letsdoit.R;
 import in.aditya.letsdoit.model.RVModel;
 import in.aditya.letsdoit.utils.DataBaseHandler;
 
-public class BottomSheetFragment extends BottomSheetDialogFragment{
+public class BottomSheetFragment extends BottomSheetDialogFragment {
 
-
-    // TODO 1: REMOVE WARNINGS
 
     //    -----------------------------------------------------TAG DECLARATION    ------------------------------------------------------------ //
 
     public static final String TAG = "BottomSheetFragment";
 
     //    ---------------------------------------------------VARIABLE DECLARATION   ------------------------------------------------------------ //
-
-
+    @SuppressLint("StaticFieldLeak")
     private static TextView dd_mm_yy;
     @SuppressLint("StaticFieldLeak")
     private static TextView hh_mm_am_pm;
-    //    private static String yyyy_mm_dd_hh_mm;
 
+    // variable to sort date and time
+    private static int sYear, sMonth, sDay, sHour, sMin;
+    int alarmStatus;
     private TextInputEditText mEditText;
     private Button mSaveButton;
     private DataBaseHandler myDb;
-    // Calender and time
     private ImageButton ibSelectCalender;
     private ImageButton ibSelectClock;
-    private  int time;
-
-
-    private static String yyyy;
-//    private static int mm;
-//    private static int dd;
-//    private static int hh;
-//    private static int min;
-//    private static String day;
-//    private static String day_mm_date_year_hh_mm;
-//    private static String am_pm;
+    private CheckBox checkBox;
 
     //      CONSTRUCTOR
     public static BottomSheetFragment newInstance() {
         return new BottomSheetFragment();
     }
 
+    //    --------------------------------------------------- On Create View   ------------------------------------------------------------ //
 
 
     @Nullable
@@ -90,38 +80,42 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
         mEditText = v.findViewById(R.id.et_new_task);
         mSaveButton = v.findViewById(R.id.btn_new_task);
         myDb = new DataBaseHandler(getActivity());
-//        String yearText;
+        checkBox = v.findViewById(R.id.notification_checkbox);
         return v;
     }
 
     //    ------------------------------------------------- ON VIEW CREATED METHOD     ------------------------------------------------------- //
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
-        ibSelectCalender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                DialogFragment newFragment = new DatePickerFragment();
-                assert getFragmentManager() != null;
-                newFragment.show(getFragmentManager(), "datePicker");
-
-            }
+        // For Date Picker
+        ibSelectCalender.setOnClickListener(view1 -> {
+            DialogFragment newFragment = new DatePickerFragment();
+            assert getFragmentManager() != null;
+            newFragment.show(getFragmentManager(), "datePicker");
         });
 
-        ibSelectClock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment timeFragment = new TimePickerFragment();
-                timeFragment.show(getFragmentManager(), "timePicker");
-            }
+        // FOr time Picker
+
+        ibSelectClock.setOnClickListener(v -> {
+            DialogFragment timeFragment = new TimePickerFragment();
+            assert getFragmentManager() != null;
+            timeFragment.show(getFragmentManager(), "timePicker");
         });
 
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                alarmStatus = 1;
+            } else {
+                alarmStatus = 0;
+            }
+        });
 
         boolean isUpdate = false;
-
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -129,15 +123,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
             String task = bundle.getString("task");
             String date = bundle.getString("date");
             String time = bundle.getString("time");
+            int alarm = bundle.getInt("alarm");
 
 
             mEditText.setText(task);
             dd_mm_yy.setText(date);
             hh_mm_am_pm.setText(time);
-
-
-
-
+            checkBox.setChecked(alarm != 0);
 
 
             //      DISABLE BUTTON
@@ -145,9 +137,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
             if (task.length() > 0) {
                 mSaveButton.setEnabled(false);
             }
+
         }
-
-
 
 
         //      TO CHECK TEXT CHANGE
@@ -156,14 +147,17 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) {
                     mSaveButton.setEnabled(false);
-                    mSaveButton.setBackgroundColor(Color.GRAY);
+                    mSaveButton.setBackgroundColor(getResources().getColor(R.color.background));
+                    mSaveButton.setBackground(getResources().getDrawable(R.drawable.btn_inactive));
                 } else {
                     mSaveButton.setEnabled(true);
                     mSaveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    mSaveButton.setBackground(getResources().getDrawable(R.drawable.btn_active));
                 }
             }
 
@@ -172,44 +166,45 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
 
             }
         });
+
+
         boolean finalIsUpdate = isUpdate;
         mSaveButton.setOnClickListener(v -> {
+
             String text = Objects.requireNonNull(mEditText.getText()).toString();
-//          String yearText = yyyy.toString();
             String date = (dd_mm_yy.getText()).toString();
             String time = (hh_mm_am_pm.getText()).toString();
 
+            int alarm = alarmStatus;
 
             //   TO UPDATE THE TASK
 
+            LocalDateTime updateDateTime = LocalDateTime.of(sYear, sMonth, sDay, sHour, sMin);
+            String dateTime = String.valueOf(updateDateTime);
             if (finalIsUpdate) {
+
                 myDb.updateTask(bundle.getInt("id"), text);
                 myDb.updateDate(bundle.getInt("id"), date);
                 myDb.updateTime(bundle.getInt("id"), time);
+                myDb.updateDateTime(bundle.getInt("id"), dateTime);
+                myDb.updateAlarm(bundle.getInt("id"), alarm);
+            } else {
 
-
-
-            }
-
-            //      TO CREATE NEW TASK
-            else {
-
+//                To create new row in colums
 
                 RVModel item = new RVModel();
                 item.setTask(text);
                 item.setStatus(0);
                 item.setDate(date);
                 item.setTime(time);
-                Log.d("MyTAG", date);
-                Log.d("My Tag", time );
+                item.setAlarm(alarm);
+                item.setDatetime(dateTime);
+
                 myDb.insertTask(item);
             }
             dismiss();
-
         });
-
     }
-
 
     //    ------------------------------------------------ ON DISMISS ACTIVITY   ------------------------------------------ //
 
@@ -237,8 +232,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
 
-
-
         @NonNull
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -254,9 +247,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
 
-            dd_mm_yy.setText(dayOfMonth + " / " + (month + 1) + " / "
-                    + year);
-            yyyy = String.valueOf(year);
+            dd_mm_yy.setText(dayOfMonth + " / " + (month + 1) + " / " + year);
+
+            sYear = year;
+            sMonth = month;
+            sDay = dayOfMonth;
+
+
         }
     }
 
@@ -278,15 +275,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
         @SuppressLint("SetTextI18n")
         @Override
         public void onTimeSet(TimePicker view, int hour_of_day, int minute) {
+            hh_mm_am_pm.setText(hour_of_day + ":" + minute);
+            sHour = hour_of_day;
+            sMin = minute;
 
-            String AM_PM;
-            if (hour_of_day < 12) {
-                AM_PM = "AM";
-            } else {
-                AM_PM = "PM";
-            }
-
-            hh_mm_am_pm.setText(hour_of_day + " : " + minute + " " + AM_PM);
         }
     }
 

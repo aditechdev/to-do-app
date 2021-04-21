@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import in.aditya.letsdoit.activity.MainActivity;
 import in.aditya.letsdoit.adapter.RVAdapter;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -49,12 +50,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     adapter.deleteTask(position);
+
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     adapter.notifyItemChanged(position);
+
                 }
             });
             AlertDialog dialog = builder.create();
