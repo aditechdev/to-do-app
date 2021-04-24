@@ -1,7 +1,5 @@
-package in.aditya.letsdoit.broadacst;
+package in.aditya.letsdoit.broadcast;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +23,5 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
         notificationCompat.notify(200, builder.build());
     }
-
 
 }

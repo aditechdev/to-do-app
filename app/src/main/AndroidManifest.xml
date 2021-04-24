@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".activity.MainActivity"/>
 
-        <receiver android:name=".broadacst.ReminderBroadcast"/>
+        <receiver android:name=".broadcast.ReminderBroadcast"/>
     </application>
 
 </manifest>

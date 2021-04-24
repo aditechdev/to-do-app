@@ -141,7 +141,12 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         }
 
 
-        //      TO CHECK TEXT CHANGE
+
+        // *****************************************************************************************
+        // **********                         TO CHECK TEXT CHANGE                ******************
+        // *****************************************************************************************
+
+
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -174,7 +179,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             String text = Objects.requireNonNull(mEditText.getText()).toString();
             String date = (dd_mm_yy.getText()).toString();
             String time = (hh_mm_am_pm.getText()).toString();
-
             int alarm = alarmStatus;
 
             //   TO UPDATE THE TASK
@@ -250,7 +254,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             dd_mm_yy.setText(dayOfMonth + " / " + (month + 1) + " / " + year);
 
             sYear = year;
-            sMonth = month;
+            sMonth = month + 1;
             sDay = dayOfMonth;
 
 

@@ -17,12 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import in.aditya.letsdoit.R;
 import in.aditya.letsdoit.activity.BottomSheetFragment;
 import in.aditya.letsdoit.activity.MainActivity;
-import in.aditya.letsdoit.broadacst.ReminderBroadcast;
+import in.aditya.letsdoit.broadcast.ReminderBroadcast;
 import in.aditya.letsdoit.model.RVModel;
 import in.aditya.letsdoit.utils.DataBaseHandler;
 
@@ -79,11 +82,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
                     // String timeAtCheckmy = item.getDatetime(); //2021-05-21T07:08
                     //long millis = localDateTime
 //                            .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//                    ##############################################################
 
-                    long timeAtCheck = System.currentTimeMillis();
-                    long tenSecMills = 1000 * 10;
+//                    long timeAtCheck = System.currentTimeMillis();
+//                    long tenSecMills = 1000 * 10;
 
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtCheck + tenSecMills, pendingIntent);
+                    String timeAtCheck = item.getDatetime();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    try {
+                        Date mDate = simpleDateFormat.parse(timeAtCheck);
+                        long timeInMilliSeconds = mDate.getTime();
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds , pendingIntent);
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
                 } else
                     myDb.updateAlarm(item.getId(), 0);
             }
