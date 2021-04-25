@@ -101,11 +101,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         sHour = t.hour;
         sMin = t.minute;
 
-       // String date1 = t.format("%d/%m/%Y");
-        //dd_mm_yy.setText(date1);
-
-
-
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
         String var = timeFormat.format(date);
@@ -164,45 +159,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             checkBox.setChecked(alarm != 0);
 
 
-            //      DISABLE BUTTON
-
-//            if (task.length() > 0) {
-//                mSaveButton.setEnabled(false);
-//            }
 
         }
-
-
-
-        // *****************************************************************************************
-        // **********                         TO CHECK TEXT CHANGE                ******************
-        // *****************************************************************************************
-
-
-//        mEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @SuppressLint("UseCompatLoadingForDrawables")
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (s.toString().equals("")) {
-//                    mSaveButton.setEnabled(false);
-//                    mSaveButton.setBackgroundColor(getResources().getColor(R.color.background));
-//                    mSaveButton.setBackground(getResources().getDrawable(R.drawable.btn_inactive));
-//                } else {
-//                    mSaveButton.setEnabled(true);
-//                    mSaveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-//                    mSaveButton.setBackground(getResources().getDrawable(R.drawable.btn_active));
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
 
 
         boolean finalIsUpdate = isUpdate;
@@ -210,8 +168,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
             if(mEditText.getText() == null || mEditText.getText().length() < 1){
                 Toast.makeText(v.getContext(), "Please give task Name", Toast.LENGTH_SHORT).show();
+
             }
             else {
+
                 String text = Objects.requireNonNull(mEditText.getText()).toString();
                 String date = (dd_mm_yy.getText()).toString();
                 String time = (hh_mm_am_pm.getText()).toString();
@@ -230,8 +190,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
                         String timeAtCheck = String.valueOf(updateDateTime);
-                        Log.i(TAG, "Time at check update:" +timeAtCheck);
-//                        String timeAtCheck = String.valueOf(updateDateTime);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
                         try {
@@ -257,9 +215,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
                         String timeAtCheck = String.valueOf(updateDateTime);
-//                        String timeAtCheck = dd_mm_yy.getText().toString() +"T"+ hh_mm_am_pm.getText().toString();
-                        Log.i(TAG, "Time at check create: " +timeAtCheck);
-//                        String timeAtCheck = String.valueOf(updateDateTime);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                         try {
                             Date mDate = simpleDateFormat.parse(timeAtCheck);
