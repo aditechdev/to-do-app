@@ -2,10 +2,13 @@ package in.aditya.letsdoit.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -30,6 +33,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -39,8 +43,11 @@ import java.util.Objects;
 
 import in.aditya.letsdoit.OnDialogCloseListener;
 import in.aditya.letsdoit.R;
+import in.aditya.letsdoit.broadcast.ReminderBroadcast;
 import in.aditya.letsdoit.model.RVModel;
 import in.aditya.letsdoit.utils.DataBaseHandler;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -217,25 +224,25 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 //
                 if (finalIsUpdate) {
 
-//                    if (alarm == 1) {
-//                        Intent intent = new Intent(getContext(), ReminderBroadcast.class);
-//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
-//                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-//
+                    if (alarm == 1) {
+                        Intent intent = new Intent(getContext(), ReminderBroadcast.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+                        String timeAtCheck = String.valueOf(updateDateTime);
+                        Log.i(TAG, "Time at check update:" +timeAtCheck);
 //                        String timeAtCheck = String.valueOf(updateDateTime);
-//                        Log.i(TAG, "Time at check update:" +timeAtCheck);
-////                        String timeAtCheck = String.valueOf(updateDateTime);
-//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//
-//                        try {
-//                            Date mDate = simpleDateFormat.parse(timeAtCheck);
-//                            long timeInMilliSeconds = mDate.getTime();
-//                            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds, pendingIntent);
-//
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+                        try {
+                            Date mDate = simpleDateFormat.parse(timeAtCheck);
+                            long timeInMilliSeconds = mDate.getTime();
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds, pendingIntent);
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     myDb.updateTask(bundle.getInt("id"), text);
                     myDb.updateDate(bundle.getInt("id"), date);
@@ -243,30 +250,26 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                     myDb.updateDateTime(bundle.getInt("id"), dateTime);
                     myDb.updateAlarm(bundle.getInt("id"), alarm);
                 } else {
-//
-//                    From the save button I am doing two things create and save
-//                     I want notification from both the way
-//                    And I am getting notification only from activity
-//                     not
-//                    if (alarm == 1) {
-//                        Intent intent = new Intent(getContext(), ReminderBroadcast.class);
-//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
-//                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-//
+
+                    if (alarm == 1) {
+                        Intent intent = new Intent(getContext(), ReminderBroadcast.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+                        String timeAtCheck = String.valueOf(updateDateTime);
+//                        String timeAtCheck = dd_mm_yy.getText().toString() +"T"+ hh_mm_am_pm.getText().toString();
+                        Log.i(TAG, "Time at check create: " +timeAtCheck);
 //                        String timeAtCheck = String.valueOf(updateDateTime);
-////                        String timeAtCheck = dd_mm_yy.getText().toString() +"T"+ hh_mm_am_pm.getText().toString();
-//                        Log.i(TAG, "Time at check create: " +timeAtCheck);
-////                        String timeAtCheck = String.valueOf(updateDateTime);
-//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//                        try {
-//                            Date mDate = simpleDateFormat.parse(timeAtCheck);
-//                            long timeInMilliSeconds = mDate.getTime();
-//                            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds, pendingIntent);
-//
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                        try {
+                            Date mDate = simpleDateFormat.parse(timeAtCheck);
+                            long timeInMilliSeconds = mDate.getTime();
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds, pendingIntent);
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     // To create new row in columns
 
