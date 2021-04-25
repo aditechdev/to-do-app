@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,16 +28,15 @@ import in.aditya.letsdoit.utils.DataBaseHandler;
 public class MainActivity extends AppCompatActivity implements OnDialogCloseListener {
 
     //    ------------------------------------------------VARIABLE DECLARATION ------------------------------------------------------ //
+
     private RecyclerView mRecyclerView;
     private DataBaseHandler dataBaseHandler;
     private List<RVModel> mList;
     private RVAdapter adapter;
     private ImageView imageBlank;
-    private CheckBox checkBox;
 
     public MainActivity() {
     }
-
 
     //    -------------------------------------------------- ON CREATE METHOD   ------------------------------------------------------------ //
 
@@ -50,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         mRecyclerView = findViewById(R.id.recycler_view);
         FloatingActionButton fab = findViewById(R.id.fab_add_task);
         imageBlank = findViewById(R.id.image_main);
-        checkBox = findViewById(R.id.alarmCheckBox); // this is checkbox ...
         dataBaseHandler = new DataBaseHandler(this);
         mList = new ArrayList<>();
         adapter = new RVAdapter(dataBaseHandler, MainActivity.this);
@@ -81,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
     }
 
-
     public void loadBlank() {
         if (adapter.getItemCount() == 0) {
             mRecyclerView.setVisibility(View.GONE);
@@ -103,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         adapter.notifyDataSetChanged();
     }
 
-    // Notification Channel
+    //----------------------------------------------------      Notification Channel      ------------------------------------------- //
 
     private void createNotificationChannel() {
 
@@ -116,10 +112,10 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-
-
         }
 
     }
 
 }
+
+//----------------------------------------------------            End Of CODE           ------------------------------------------- //

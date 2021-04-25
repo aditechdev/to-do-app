@@ -5,6 +5,7 @@ public class RVModel {
     private int id, status, alarm;
     private String date, time, task, datetime;
 
+
     public RVModel(int id, int status, int alarm, String date, String time, String task, String datetime) {
         this.id = id;
         this.status = status;
@@ -16,7 +17,6 @@ public class RVModel {
     }
 
     public RVModel() {
-
     }
 
     @Override

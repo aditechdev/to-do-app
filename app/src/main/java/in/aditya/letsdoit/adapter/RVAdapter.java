@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +88,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder> {
 //                    long timeAtCheck = System.currentTimeMillis();
 //                    long tenSecMills = 1000 * 10;
 
+
                     String timeAtCheck = item.getDatetime();
+                    Log.i("TAG", "onCheckedChanged: " + timeAtCheck);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                     try {
                         Date mDate = simpleDateFormat.parse(timeAtCheck);
+                        Log.i("TAG", "onCheckedChanged: " + mDate.toString());
+//                        long timeInMilliSeconds = System.currentTimeMillis() + mDate.getTime();
                         long timeInMilliSeconds = mDate.getTime();
                         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliSeconds , pendingIntent);
 
