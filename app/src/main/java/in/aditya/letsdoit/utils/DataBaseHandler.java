@@ -6,17 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import in.aditya.letsdoit.model.RVModel;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
-
-    //      TODO 6: REMOVE WARNING
 
     //    ------------------------------------------------ DATA BASE -------------------------------------------------------------------- //
     public static final int DB_VERSION = 1;
@@ -27,17 +22,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "ID";
     public static final String KEY_TASK_NAME = "TASK_NAME";
+    public static final String KEY_TASK_ALARM = "TASK_ALARM";
+    public static final String KEY_TASK_STATUS = "TASK_STATUS";
     private static final String KEY_TASK_DATE = "TASK_DATE";
     private static final String KEY_TASK_TIME = "TASK_TIME";
     private static final String KEY_TASK_DATE_TIME = "TASK_DATE_TIME";
-    public static final String KEY_TASK_ALARM = "TASK_ALARM";
-    public static final String KEY_TASK_STATUS = "TASK_STATUS";
 
-//    public static final String KEY_YYYY = "TASK_YYYY";
-//    KEY_YYYY + "TEXT
 
     //    ------------------------------------------- Other Declaration ----------------------------------------------------------------- //
-
     private final Context context;
     private SQLiteDatabase db;
 
@@ -52,7 +44,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_DATE + " TEXT, "  + KEY_TASK_TIME + " TEXT, " + KEY_TASK_DATE_TIME + " TEXT, " + KEY_TASK_ALARM + " INTEGER, " + KEY_TASK_STATUS + " INTEGER)";
+        String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TASK_NAME + " TEXT, " + KEY_TASK_DATE + " TEXT, " + KEY_TASK_TIME + " TEXT, " + KEY_TASK_DATE_TIME + " TEXT, " + KEY_TASK_ALARM + " INTEGER, " + KEY_TASK_STATUS + " INTEGER)";
 
         db.execSQL(createTableStatement);
     }
@@ -80,7 +72,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_TASK_TIME, model.getTime());
 
 
-//        values.put(KEY_YYYY, model.getyyyy());
         long insert = db.insert(TABLE_NAME, null, values);
         if (insert == -1) {
             Toast.makeText(context, "Failed to Save", Toast.LENGTH_SHORT).show();
@@ -98,8 +89,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         taskValue.put(KEY_TASK_NAME, task);
 
         int update = db.update(TABLE_NAME, taskValue, "ID=?", new String[]{String.valueOf(id)});
-        
-        
+
+
         if (update == -1) {
             Toast.makeText(context, "Your File not Updated", Toast.LENGTH_SHORT).show();
 
@@ -131,7 +122,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     //    ------------------------------------------------- Update Time ---------------------------------------------------- //
 
-    public void updateTime(int id,  String time) {
+    public void updateTime(int id, String time) {
         db = this.getWritableDatabase();
         ContentValues timeValues = new ContentValues();
 
@@ -145,7 +136,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         } else {
             Toast.makeText(context, "Your TODO Updated ", Toast.LENGTH_SHORT).show();
         }
-
         db.close();
     }
 
@@ -190,7 +180,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
-
     //    ---------------------------------------------- DELETE THE TASK --------------------------------------------------------------- //
 
     public void deleteTask(int id) {
@@ -219,20 +208,15 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                         task.setAlarm(cursor.getInt(cursor.getColumnIndex(KEY_TASK_ALARM)));
                         task.setTime(cursor.getString(cursor.getColumnIndex(KEY_TASK_TIME)));
                         modelList.add(task);
-
                     } while (cursor.moveToNext());
-
                 }
             }
         } finally {
             db.endTransaction();
             db.close();
-
         }
         return modelList;
     }
-
-
 }
 
 //    -------------------------------------------------   END OF CODE     ------------------------------------------------------------------ //
